@@ -1,65 +1,129 @@
-import Image from "next/image";
+"use client";
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { useDispatch, useSelector } from 'react-redux';
+import { addItem } from '../redux/cart/cartSlice'; // Adjust path to your cartSlice
+
+import Banner from "./components/Banner";
+import Terms from "./components/Terms";
+import HighlightSection from "./components/HighLightSection";
+import TestimonialSection from "./components/TestimonialsSection";
+import Hero from "./components/Hero";
+import Collections from "./components/Collections";
 
 export default function Home() {
+  const [products, setProducts] = useState([]);
+  const [addingId, setAddingId] = useState(null);
+
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart.items);
+
+  const fetchProducts = async () => {
+    const res = await fetch("/api/getProducts");
+    const data = await res.json();
+    setProducts(data.products);
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  console.log(cartItems); // Logs Redux cart items
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.js file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <>
+      <Banner />
+
+      <h1 className="text-3xl font-bold my-12 mx-18">Shop by Collection</h1>
+      <Collections />
+
+      <h1 className="text-3xl font-bold my-12 mx-18">Trending Products</h1>
+
+      <div className="grid grid-cols-4 mx-auto w-11/12 gap-12 mb-12">
+        {products.slice(0, 8).map((product) => (  // Show only first 8 products
+          <Link key={product._id} href={`/product/${product._id}`}>
+            <div className="group relative bg-white border border-gray-100 rounded-sm overflow-hidden ">
+              {/* Image */}
+              <div className="relative h-64 overflow-hidden bg-[#f3f3f3]">
+                <img
+                  src={product.images?.[0] || product.images?.[1]}
+                  alt={product.title}
+                  className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-700"
+                />
+
+                {/* Sale Badge */}
+                {product.compareAtPrice > product.price && (
+                  <span className="absolute top-3 left-3 bg-red-600 text-white text-[10px] font-bold rounded-full h-12 flex justify-center items-center w-12 uppercase tracking-widest">
+                    {Math.round((product.price * 100) / product.compareAtPrice)}%
+                  </span>
+                )}
+
+                {/* Add to Cart */}
+                <div className="absolute  inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setAddingId(product._id);
+                      dispatch(addItem({
+                        id: product._id,
+                        title: product.title,
+                        price: product.price,
+                        compareAtPrice: product.compareAtPrice,
+                        image: product.images?.[0] || ''
+                      }));
+                      setTimeout(() => setAddingId(null), 1200);
+                    }}
+                    className={`w-full cursor-pointer py-2 text-xs font-bold uppercase tracking-widest transition-all duration-300 ${
+                      addingId === product._id
+                        ? "bg-black text-white scale-95 ring-2 ring-green-300"
+                        : "bg-black text-white hover:scale-[0.98]"
+                    }`}
+                  >
+                    {addingId === product._id ? "Added ✓" : "Add to Cart"}
+                  </button>
+                </div>
+              </div>
+
+              {/* Content */}
+              <div className="p-4 flex flex-col items-center text-center">
+                <span className="text-[10px] text-gray-400 uppercase tracking-[0.2em] mb-1">
+                  Premium Selection
+                </span>
+                <h3 className="text-sm font-bold text-gray-900 line-clamp-1 mb-1 group-hover:text-blue-900 transition-colors">
+                  {product.title}
+                </h3>
+                <p className="text-[11px] text-gray-500 line-clamp-1 mb-3 max-w-[90%] uppercase tracking-tighter">
+                  {product.description}
+                </p>
+                <div className="flex items-center gap-3">
+                  {product.compareAtPrice > 0 && (
+                    <span className="text-xs text-gray-400 line-through">
+                      Rs.{product.compareAtPrice}
+                    </span>
+                  )}
+                  <span className="text-sm font-black text-black">
+                    Rs.{product.price}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </Link>
+        ))}
+      </div>
+
+      {/* View All Button */}
+      <div className="text-center mb-12">
+        <Link href="/shop">
+          <button className="bg-[#111111] text-white rounded-full px-10 py-3 cursor-pointer hover:translate-y-1 hover:bg-black hover:text-white transition-all duration-300 uppercase text-sm font-bold tracking-tighter">
+            View All Products
+          </button>
+        </Link>
+      </div>
+
+      <HighlightSection />
+      <TestimonialSection />
+      <Hero />
+      <Terms />
+    </>
   );
 }

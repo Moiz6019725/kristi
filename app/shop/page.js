@@ -267,7 +267,7 @@ const Page = () => {
                 {/* Image */}
                 <div className="relative h-64 overflow-hidden bg-[#f3f3f3]">
                   <img
-                    src={product.images?.[1] || product.images?.[0]}
+                    src={product.images?.[0] || product.images?.[1]}
                     alt={product.title}
                     className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-700"
                   />
