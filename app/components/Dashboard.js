@@ -20,7 +20,7 @@ ChartJS.register(
   LineElement,
   Tooltip,
   Legend,
-  Filler
+  Filler,
 );
 
 const Dashboard = () => {
@@ -42,7 +42,10 @@ const Dashboard = () => {
       setRecentOrders(orders);
 
       const deliveredOrders = orders.filter((o) => o.status === "delivered");
-      const totalSales = deliveredOrders.reduce((sum, o) => sum + o.totalAmount, 0);
+      const totalSales = deliveredOrders.reduce(
+        (sum, o) => sum + o.totalAmount,
+        0,
+      );
       const uniqueCustomers = new Set(orders.map((o) => o.buyerPhone)).size;
 
       setMetrics([
@@ -238,11 +241,15 @@ const Dashboard = () => {
             <h1 className="text-4xl font-bold bg-linear-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
               Dashboard Overview
             </h1>
-            <p className="text-gray-600 mt-2">Welcome back! Here's what's happening today.</p>
+            <p className="text-gray-600 mt-2">
+              Welcome back! Here's what's happening today.
+            </p>
           </div>
           <div className="flex items-center space-x-2 bg-white px-4 py-2 rounded-full shadow-md">
             <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
-            <span className="text-sm font-medium text-gray-700">Live Updates</span>
+            <span className="text-sm font-medium text-gray-700">
+              Live Updates
+            </span>
           </div>
         </div>
 
@@ -251,10 +258,12 @@ const Dashboard = () => {
           {metrics.map((m, i) => (
             <div
               key={i}
-              className="group relative overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
+              className="group cursor-pointer relative overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
             >
               {/* Gradient Background */}
-              <div className={`absolute inset-0 bg-linear-to-br ${m.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}></div>
+              <div
+                className={`absolute inset-0 bg-linear-to-br ${m.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}
+              ></div>
 
               {/* Icon Background */}
               <div className="absolute -top-4 -right-4 text-8xl opacity-5 group-hover:opacity-10 transition-opacity duration-300">
@@ -263,19 +272,27 @@ const Dashboard = () => {
 
               <div className="relative p-6">
                 {/* Icon Badge */}
-                <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl bg-linear-to-br ${m.gradient} mb-4 shadow-lg`}>
+                <div
+                  className={`inline-flex items-center justify-center w-12 h-12 rounded-xl bg-linear-to-br ${m.gradient} mb-4 shadow-lg`}
+                >
                   <span className="text-2xl">{m.icon}</span>
                 </div>
 
                 {/* Title */}
-                <p className="text-sm font-medium text-gray-500 mb-1">{m.title}</p>
+                <p className="text-sm font-medium text-gray-500 mb-1">
+                  {m.title}
+                </p>
 
                 {/* Value */}
-                <p className="text-3xl font-bold text-gray-900 mb-2">{m.value}</p>
+                <p className="text-3xl font-bold text-gray-900 mb-2">
+                  {m.value}
+                </p>
 
                 {/* Change Indicator */}
                 <div className="flex items-center space-x-1">
-                  <span className={`text-xs font-semibold ${m.changeType === "positive" ? "text-emerald-600" : "text-rose-600"}`}>
+                  <span
+                    className={`text-xs font-semibold ${m.changeType === "positive" ? "text-emerald-600" : "text-rose-600"}`}
+                  >
                     {m.changeType === "positive" ? "↑" : "↓"} {m.change}
                   </span>
                   <span className="text-xs text-gray-500">vs last month</span>
@@ -283,7 +300,9 @@ const Dashboard = () => {
               </div>
 
               {/* Bottom Border Animation */}
-              <div className={`h-1 bg-linear-to-r ${m.gradient} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300`}></div>
+              <div
+                className={`h-1 bg-linear-to-r ${m.gradient} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300`}
+              ></div>
             </div>
           ))}
         </div>
@@ -292,12 +311,18 @@ const Dashboard = () => {
         <div className="bg-white rounded-3xl shadow-lg p-8 hover:shadow-xl transition-shadow duration-300">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900">Sales Analytics</h2>
-              <p className="text-gray-500 text-sm mt-1">Track your revenue performance over time</p>
+              <h2 className="text-2xl font-bold text-gray-900">
+                Sales Analytics
+              </h2>
+              <p className="text-gray-500 text-sm mt-1">
+                Track your revenue performance over time
+              </p>
             </div>
             <div className="flex items-center space-x-2 bg-purple-50 px-4 py-2 rounded-full">
               <div className="w-3 h-3 bg-purple-600 rounded-full"></div>
-              <span className="text-sm font-medium text-purple-900">Revenue</span>
+              <span className="text-sm font-medium text-purple-900">
+                Revenue
+              </span>
             </div>
           </div>
 
@@ -310,96 +335,93 @@ const Dashboard = () => {
         <div className="bg-white rounded-3xl shadow-lg p-8 hover:shadow-xl transition-shadow duration-300">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900">Recent Orders</h2>
-              <p className="text-gray-500 text-sm mt-1">Manage and track all your orders</p>
+              <h2 className="text-2xl font-bold text-gray-900">
+                Recent Orders
+              </h2>
+              <p className="text-gray-500 text-sm mt-1">
+                Manage and track all your orders
+              </p>
             </div>
             <div className="bg-gray-100 px-4 py-2 rounded-full">
-              <span className="text-sm font-semibold text-gray-700">{recentOrders.length} Orders</span>
+              <span className="text-sm font-semibold text-gray-700">
+                {recentOrders.length} Orders
+              </span>
             </div>
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full">
+            <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Order ID
-                  </th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Customer
-                  </th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Contact
-                  </th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Amount
-                  </th>
-                  <th className="text-left px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Status
-                  </th>
-                  <th className="text-right px-6 py-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
+              <tr className="text-left text-gray-500 border-b">
+                <th className="py-3">Order</th>
+                <th className="py-3">Customer</th>
+                <th className="py-3">Phone</th>
+                <th className="py-3">Total</th>
+                <th className="py-3">Status</th>
+                <th className="py-3 text-right">Actions</th>
+              </tr>
+            </thead>
 
-              <tbody className="divide-y divide-gray-100">
-                {recentOrders.map((order, index) => (
+              <tbody>
+                {recentOrders.map((order) => (
                   <tr
                     key={order._id}
-                    className="hover:bg-gray-50 transition-colors duration-150"
-                    style={{ animationDelay: `${index * 50}ms` }}
+                    className="border-b border-b-[#e9e9e9] hover:bg-gray-50 transition"
                   >
-                    <td className="px-6 py-4">
-                      <div className="flex items-center space-x-2">
-                        <div className="w-8 h-8 bg-linear-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
-                          <span className="text-white text-xs font-bold">#{order._id.slice(-2)}</span>
-                        </div>
-                        <span className="font-semibold text-gray-900">#{order._id.slice(-6)}</span>
+                    <td className="py-4 font-medium text-gray-800">
+                      <button
+                        onClick={() => openModal(order)}
+                        className="text-blue-600 cursor-pointer hover:text-blue-800 underline"
+                      >
+                        #{order._id.slice(-6)}
+                      </button>
+                    </td>
+
+                    <td className="py-4">
+                      <div className="font-medium text-gray-800">
+                        {order.buyerName}
                       </div>
                     </td>
 
-                    <td className="px-6 py-4">
-                      <div className="flex items-center space-x-3">
-                        <div className="w-10 h-10 bg-linear-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
-                          <span className="text-white font-bold text-sm">
-                            {order.buyerName.charAt(0).toUpperCase()}
-                          </span>
-                        </div>
-                        <span className="font-medium text-gray-900">{order.buyerName}</span>
-                      </div>
-                    </td>
+                    <td className="py-4 text-gray-600">{order.buyerPhone}</td>
 
-                    <td className="px-6 py-4">
-                      <span className="text-gray-600">{order.buyerPhone}</span>
-                    </td>
-
-                    <td className="px-6 py-4">
-                      <span className="font-bold text-gray-900">Rs. {order.totalAmount.toLocaleString()}</span>
+                    <td className="py-4 font-semibold text-gray-800">
+                      Rs. {order.totalAmount}
                     </td>
 
                     <td className="px-6 py-4">
                       <select
                         value={order.status}
-                        onChange={(e) => updateStatus(order._id, e.target.value)}
-                        className={`px-4 py-2 rounded-full text-xs font-bold border-2 cursor-pointer transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 ${getStatusBadgeStyles(
-                          order.status
-                        )}`}
+                        onChange={(e) =>
+                          updateStatus(order._id, e.target.value)
+                        }
+                        className={`px-3 py-1.5 rounded-full cursor-pointer text-xs font-medium border
+                    ${
+                      order.status === "pending"
+                        ? "bg-yellow-50 text-yellow-700 border-yellow-200"
+                        : order.status === "processing"
+                          ? "bg-blue-50 text-blue-700 border-blue-200"
+                          : order.status === "shipped"
+                            ? "bg-purple-50 text-purple-700 border-purple-200"
+                            : order.status === "delivered"
+                              ? "bg-green-50 text-green-700 border-green-200"
+                              : "bg-red-50 text-red-700 border-red-200"
+                    }`}
                       >
-                        <option value="pending">⏳ Pending</option>
-                        <option value="processing">⚙️ Processing</option>
-                        <option value="shipped">🚚 Shipped</option>
-                        <option value="delivered">✅ Delivered</option>
-                        <option value="cancelled">❌ Cancelled</option>
+                        <option value="pending">Pending</option>
+                        <option value="processing">Processing</option>
+                        <option value="shipped">Shipped</option>
+                        <option value="delivered">Delivered</option>
+                        <option value="cancelled">Cancelled</option>
                       </select>
                     </td>
 
                     <td className="px-6 py-4 text-right">
                       <button
                         onClick={() => deleteOrder(order._id)}
-                        className="inline-flex items-center px-4 py-2 bg-rose-50 hover:bg-rose-100 text-rose-600 font-semibold rounded-lg transition-all duration-200 hover:shadow-md"
+                        className="text-red-600 cursor-pointer hover:text-red-800 text-sm font-medium"
                       >
-                        <span className="mr-1">🗑️</span> Delete
+                        Delete
                       </button>
                     </td>
                   </tr>
@@ -411,7 +433,9 @@ const Dashboard = () => {
               <div className="text-center py-12">
                 <div className="text-6xl mb-4">📦</div>
                 <p className="text-gray-500 font-medium">No orders yet</p>
-                <p className="text-gray-400 text-sm">Orders will appear here once customers start purchasing</p>
+                <p className="text-gray-400 text-sm">
+                  Orders will appear here once customers start purchasing
+                </p>
               </div>
             )}
           </div>

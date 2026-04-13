@@ -81,7 +81,7 @@ const Page = () => {
   return (
     <div className="w-[96%] mx-auto mt-10 flex flex-col lg:flex-row gap-6">
       {/* LEFT SIDEBAR */}
-      <aside className="w-full lg:w-64  p-5 rounded-xl sticky top-1/6 h-fit">
+      <aside className="w-full lg:w-64  p-5 rounded-xl h-fit">
         <h2 className="text-xl font-bold mb-6 text-gray-800">Filters</h2>
 
         {/* COLLECTIONS */}

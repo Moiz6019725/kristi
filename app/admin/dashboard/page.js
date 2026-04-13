@@ -117,7 +117,7 @@ const Page = () => {
     <div className="h-screen flex bg-linear-to-br from-slate-50 via-purple-50 to-slate-100">
       {/* Sidebar */}
       <aside
-        className={`bg-linear-to-b from-slate-900 via-slate-800 to-slate-900 shadow-2xl transition-all duration-300 ease-in-out ${
+        className={`bg-black shadow-2xl transition-all duration-300 ease-in-out ${
           sidebarOpen ? "w-72" : "w-20"
         } flex flex-col relative border-r border-slate-700/50`}
       >

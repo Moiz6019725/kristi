@@ -71,7 +71,7 @@ export default function CheckoutPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* LEFT: Product Summary */}
         <div className="lg:col-span-1">
-          <div className="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-lg p-6 border border-gray-200 sticky top-6">
+          <div className="bg-linear-to-br from-white to-gray-50 rounded-2xl shadow-lg p-6 border border-gray-200">
             <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
               <Package className="w-5 h-5" />
               Order Summary

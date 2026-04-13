@@ -18,7 +18,7 @@ export default function ProductGallery({ images }) {
         modules={[Navigation, Thumbs]}
         navigation
         thumbs={{ swiper: thumbs }}
-        className="bg-gray-100"
+        className="bg-gray-100 rounded-2xl"
         style={{
           "--swiper-navigation-color": "#484848",
           "--swiper-pagination-color": "#484848",

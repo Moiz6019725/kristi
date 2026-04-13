@@ -209,7 +209,7 @@ export default function OrderForm({ products }) {
           <p className="text-sm font-medium">
             Total Amount: Rs. {products.reduce((sum, product, index) => sum + (quantities[index] * product.price), 0)}
           </p>
-          <p className="text-sm">Payment Method: Cash on Delivery (COD)</p>
+          <p className="text-sm bg-[#F5F6FF] my-1 p-3 rounded-xl border-blue-700 border">Payment Method: Cash on Delivery (COD)</p>
         </div>
 
         {/* Submit Button */}

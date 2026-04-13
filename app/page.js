@@ -34,17 +34,17 @@ export default function Home() {
     <>
       <Banner />
 
-      <h1 className="text-3xl font-bold my-12 mx-18">Shop by Collection</h1>
+      <h1 className="text-3xl max-[600px]:text-xl max-[600px]:my-6 max-[600px]:mx-9 font-bold my-12 mx-18">Shop by Collection</h1>
       <Collections />
 
-      <h1 className="text-3xl font-bold my-12 mx-18">Trending Products</h1>
+      <h1 className="text-3xl max-[600px]:text-xl max-[600px]:my-6 max-[600px]:mx-9 font-bold my-12 mx-18">Trending Products</h1>
 
-      <div className="grid grid-cols-4 mx-auto w-11/12 gap-12 mb-12">
+      <div className="grid grid-cols-4 max-[1200px]:grid-cols-3 max-[930px]:grid-cols-2 mx-auto w-11/12 gap-3 md:gap-12 mb-12">
         {products.slice(0, 8).map((product) => (  // Show only first 8 products
           <Link key={product._id} href={`/product/${product._id}`}>
             <div className="group relative bg-white border border-gray-100 rounded-sm overflow-hidden ">
               {/* Image */}
-              <div className="relative h-64 overflow-hidden bg-[#f3f3f3]">
+              <div className="relative h-38 md:h-64 overflow-hidden bg-[#f3f3f3]">
                 <img
                   src={product.images?.[0] || product.images?.[1]}
                   alt={product.title}
@@ -112,9 +112,9 @@ export default function Home() {
       </div>
 
       {/* View All Button */}
-      <div className="text-center mb-12">
+      <div className="text-center md:mb-12 mb-8">
         <Link href="/shop">
-          <button className="bg-[#111111] text-white rounded-full px-10 py-3 cursor-pointer hover:translate-y-1 hover:bg-black hover:text-white transition-all duration-300 uppercase text-sm font-bold tracking-tighter">
+          <button className="bg-[#111111] text-white rounded-full px-4 py-1 md:px-10 md:py-3  cursor-pointer hover:translate-y-1 hover:bg-black hover:text-white transition-all duration-300 uppercase text-[12px] md:text-sm font-bold tracking-tighter">
             View All Products
           </button>
         </Link>

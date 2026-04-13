@@ -110,7 +110,7 @@ const Footer = () => {
               </h2>
               <ul className="text-sm text-gray-400">
                 <li className="mb-3">
-                  <Link href="#" className="hover:underline">
+                  <Link href="/terms-of-service" className="hover:underline">
                     Terms Of Service
                   </Link>
                 </li>
