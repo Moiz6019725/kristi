@@ -410,7 +410,7 @@ export default function Orders() {
               </button>
               <button
                 onClick={printShippingLabel}
-                className="w-full sm:w-auto bg-gradient-to-t from-[#323c47] to-[#1A1A1A] cursor-pointer text-sm font-semibold text-white px-5 py-2 rounded-lg hover:opacity-90 transition"
+                className="w-full sm:w-auto bg-linear-to-t from-[#323c47] to-[#1A1A1A] cursor-pointer text-sm font-semibold text-white px-5 py-2 rounded-lg hover:opacity-90 transition"
               >
                 Print shipping label
               </button>
