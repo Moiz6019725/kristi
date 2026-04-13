@@ -4,7 +4,7 @@ import { ContainerTruck01Icon,TruckReturnIcon,CustomerService01Icon } from "@hug
 
 const Terms = () => {
   return (
-    <div className="flex h-36 justify-evenly my-20">
+    <div className="flex h-36 justify-evenly my-20 max-[800px]:flex-col max-[800px]:h-auto max-[800px]:gap-10">
       <div className="flex flex-col gap-2 items-center basis-[22%]">
         <HugeiconsIcon icon={ContainerTruck01Icon} size={38} color="#444444" />
         <h3 className="font-semibold text-base">Free Shipping</h3>

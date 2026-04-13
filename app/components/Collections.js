@@ -31,7 +31,7 @@ const Collections = () => {
   }, []);
 
   return (
-    <div className="flex flex-wrap gap-4 md:gap-8 justify-center md:justify-center overflow-x-auto whitespace-nowrap py-4 px-4 md:px-6 scrollbar-hide">
+    <div className="flex flex-wrap gap-4 md:gap-8 justify-center overflow-x-auto whitespace-nowrap py-4 px-4 md:px-6 scrollbar-hide">
       {collections.map((collection) => (
         <Link key={collection._id} href={`/collection/${collection._id}`}>
           <div className="shrink-0 relative hover:scale-[1.03] transition-all ease-in-out text-center cursor-pointer flex flex-col items-center justify-center">

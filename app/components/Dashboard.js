@@ -30,7 +30,6 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  /* ---------------- FETCH ORDERS + METRICS ---------------- */
   const fetchOrders = async () => {
     try {
       const res = await fetch("/api/orders");
@@ -90,7 +89,6 @@ const Dashboard = () => {
     }
   };
 
-  /* ---------------- FETCH SALES CHART ---------------- */
   const fetchSalesChart = async () => {
     try {
       const res = await fetch("/api/orders/sales-overview");
@@ -112,14 +110,14 @@ const Dashboard = () => {
             },
             tension: 0.4,
             fill: true,
-            pointRadius: 6,
-            pointHoverRadius: 8,
+            pointRadius: 4,
+            pointHoverRadius: 6,
             pointBackgroundColor: "#8b5cf6",
             pointBorderColor: "#fff",
-            pointBorderWidth: 3,
+            pointBorderWidth: 2,
             pointHoverBackgroundColor: "#fff",
             pointHoverBorderColor: "#8b5cf6",
-            pointHoverBorderWidth: 3,
+            pointHoverBorderWidth: 2,
           },
         ],
       });
@@ -161,12 +159,10 @@ const Dashboard = () => {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: {
-        display: false,
-      },
+      legend: { display: false },
       tooltip: {
         backgroundColor: "rgba(0, 0, 0, 0.8)",
-        padding: 12,
+        padding: 10,
         borderColor: "#8b5cf6",
         borderWidth: 1,
         titleColor: "#fff",
@@ -177,236 +173,211 @@ const Dashboard = () => {
     scales: {
       y: {
         beginAtZero: true,
-        grid: {
-          color: "rgba(0, 0, 0, 0.05)",
-          drawBorder: false,
-        },
-        ticks: {
-          color: "#6b7280",
-          font: {
-            size: 12,
-          },
-        },
+        grid: { color: "rgba(0,0,0,0.05)", drawBorder: false },
+        ticks: { color: "#6b7280", font: { size: 11 } },
       },
       x: {
-        grid: {
-          display: false,
-        },
+        grid: { display: false },
         ticks: {
           color: "#6b7280",
-          font: {
-            size: 12,
-          },
+          font: { size: 11 },
+          maxRotation: 45,       // ← allows label rotation on small screens
+          autoSkip: true,
+          maxTicksLimit: 8,      // ← prevents label crowding
         },
       },
     },
   };
 
-  const getStatusBadgeStyles = (status) => {
-    const styles = {
-      pending: "bg-amber-100 text-amber-800 border-amber-200",
-      processing: "bg-blue-100 text-blue-800 border-blue-200",
-      shipped: "bg-purple-100 text-purple-800 border-purple-200",
-      delivered: "bg-emerald-100 text-emerald-800 border-emerald-200",
-      cancelled: "bg-rose-100 text-rose-800 border-rose-200",
+  const getStatusSelectClass = (status) => {
+    const base =
+      "px-2 py-1.5 rounded-full cursor-pointer text-xs font-medium border w-full sm:w-auto";
+    const map = {
+      pending:    "bg-yellow-50 text-yellow-700 border-yellow-200",
+      processing: "bg-blue-50 text-blue-700 border-blue-200",
+      shipped:    "bg-purple-50 text-purple-700 border-purple-200",
+      delivered:  "bg-green-50 text-green-700 border-green-200",
+      cancelled:  "bg-red-50 text-red-700 border-red-200",
     };
-    return styles[status] || styles.pending;
+    return `${base} ${map[status] ?? map.pending}`;
   };
 
   if (loading)
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-screen px-4">
         <div className="flex flex-col items-center space-y-4">
-          <div className="w-16 h-16 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin"></div>
-          <p className="text-gray-600 font-medium">Loading your dashboard...</p>
+          <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin" />
+          <p className="text-gray-600 font-medium text-sm sm:text-base">
+            Loading your dashboard…
+          </p>
         </div>
       </div>
     );
 
   if (error)
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="bg-red-50 border-2 border-red-200 rounded-2xl p-8 max-w-md">
-          <p className="text-red-600 font-semibold text-center">{error}</p>
+      <div className="flex items-center justify-center min-h-screen px-4">
+        <div className="bg-red-50 border-2 border-red-200 rounded-2xl p-6 sm:p-8 max-w-md w-full">
+          <p className="text-red-600 font-semibold text-center text-sm sm:text-base">
+            {error}
+          </p>
         </div>
       </div>
     );
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-slate-50 via-purple-50 to-slate-100 p-8">
-      <div className="max-w-7xl mx-auto space-y-8">
-        {/* HEADER */}
-        <div className="flex items-center justify-between mb-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-slate-100 p-4 sm:p-6 lg:p-8">
+      <div className="max-w-7xl mx-auto space-y-6 sm:space-y-8">
+
+        {/* ── HEADER ── */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
-            <h1 className="text-4xl font-bold bg-linear-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
               Dashboard Overview
             </h1>
-            <p className="text-gray-600 mt-2">
+            <p className="text-gray-600 mt-1 text-sm sm:text-base">
               Welcome back! Here's what's happening today.
             </p>
           </div>
-          <div className="flex items-center space-x-2 bg-white px-4 py-2 rounded-full shadow-md">
-            <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
-            <span className="text-sm font-medium text-gray-700">
+          <div className="flex items-center space-x-2 bg-white px-3 py-2 sm:px-4 rounded-full shadow-md self-start sm:self-auto">
+            <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
+            <span className="text-xs sm:text-sm font-medium text-gray-700">
               Live Updates
             </span>
           </div>
         </div>
 
-        {/* METRICS CARDS */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* ── METRIC CARDS ── */}
+        {/* 2-col on mobile, 4-col on lg+ */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
           {metrics.map((m, i) => (
             <div
               key={i}
-              className="group cursor-pointer relative overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
+              className="group relative overflow-hidden rounded-2xl bg-white shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5"
             >
-              {/* Gradient Background */}
               <div
-                className={`absolute inset-0 bg-linear-to-br ${m.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}
-              ></div>
-
-              {/* Icon Background */}
-              <div className="absolute -top-4 -right-4 text-8xl opacity-5 group-hover:opacity-10 transition-opacity duration-300">
-                {m.icon}
-              </div>
-
-              <div className="relative p-6">
-                {/* Icon Badge */}
+                className={`absolute inset-0 bg-gradient-to-br ${m.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}
+              />
+              <div className="relative p-4 sm:p-5 lg:p-6">
                 <div
-                  className={`inline-flex items-center justify-center w-12 h-12 rounded-xl bg-linear-to-br ${m.gradient} mb-4 shadow-lg`}
+                  className={`inline-flex items-center justify-center w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br ${m.gradient} mb-3 shadow-md`}
                 >
-                  <span className="text-2xl">{m.icon}</span>
+                  <span className="text-lg sm:text-xl">{m.icon}</span>
                 </div>
-
-                {/* Title */}
-                <p className="text-sm font-medium text-gray-500 mb-1">
+                <p className="text-xs sm:text-sm font-medium text-gray-500 mb-1 truncate">
                   {m.title}
                 </p>
-
-                {/* Value */}
-                <p className="text-3xl font-bold text-gray-900 mb-2">
+                <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-1 truncate">
                   {m.value}
                 </p>
-
-                {/* Change Indicator */}
-                <div className="flex items-center space-x-1">
+                <div className="flex items-center gap-1 flex-wrap">
                   <span
-                    className={`text-xs font-semibold ${m.changeType === "positive" ? "text-emerald-600" : "text-rose-600"}`}
+                    className={`text-xs font-semibold ${
+                      m.changeType === "positive"
+                        ? "text-emerald-600"
+                        : "text-rose-600"
+                    }`}
                   >
                     {m.changeType === "positive" ? "↑" : "↓"} {m.change}
                   </span>
-                  <span className="text-xs text-gray-500">vs last month</span>
+                  <span className="text-xs text-gray-400 hidden sm:inline">
+                    vs last month
+                  </span>
                 </div>
               </div>
-
-              {/* Bottom Border Animation */}
               <div
-                className={`h-1 bg-linear-to-r ${m.gradient} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300`}
-              ></div>
+                className={`h-1 bg-gradient-to-r ${m.gradient} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300`}
+              />
             </div>
           ))}
         </div>
 
-        {/* SALES CHART */}
-        <div className="bg-white rounded-3xl shadow-lg p-8 hover:shadow-xl transition-shadow duration-300">
-          <div className="flex items-center justify-between mb-6">
+        {/* ── SALES CHART ── */}
+        <div className="bg-white rounded-3xl shadow-lg p-4 sm:p-6 lg:p-8 hover:shadow-xl transition-shadow duration-300">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900">
+              <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900">
                 Sales Analytics
               </h2>
-              <p className="text-gray-500 text-sm mt-1">
+              <p className="text-gray-500 text-xs sm:text-sm mt-0.5">
                 Track your revenue performance over time
               </p>
             </div>
-            <div className="flex items-center space-x-2 bg-purple-50 px-4 py-2 rounded-full">
-              <div className="w-3 h-3 bg-purple-600 rounded-full"></div>
-              <span className="text-sm font-medium text-purple-900">
+            <div className="flex items-center space-x-2 bg-purple-50 px-3 py-1.5 rounded-full self-start sm:self-auto">
+              <div className="w-2.5 h-2.5 bg-purple-600 rounded-full" />
+              <span className="text-xs sm:text-sm font-medium text-purple-900">
                 Revenue
               </span>
             </div>
           </div>
-
-          <div className="h-80">
+          {/* Chart height shrinks on mobile */}
+          <div className="h-48 sm:h-64 lg:h-80">
             {chartData && <Line data={chartData} options={chartOptions} />}
           </div>
         </div>
 
-        {/* ORDERS TABLE */}
-        <div className="bg-white rounded-3xl shadow-lg p-8 hover:shadow-xl transition-shadow duration-300">
-          <div className="flex items-center justify-between mb-6">
+        {/* ── ORDERS TABLE ── */}
+        <div className="bg-white rounded-3xl shadow-lg p-4 sm:p-6 lg:p-8 hover:shadow-xl transition-shadow duration-300">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900">
+              <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900">
                 Recent Orders
               </h2>
-              <p className="text-gray-500 text-sm mt-1">
+              <p className="text-gray-500 text-xs sm:text-sm mt-0.5">
                 Manage and track all your orders
               </p>
             </div>
-            <div className="bg-gray-100 px-4 py-2 rounded-full">
-              <span className="text-sm font-semibold text-gray-700">
+            <div className="bg-gray-100 px-3 py-1.5 rounded-full self-start sm:self-auto">
+              <span className="text-xs sm:text-sm font-semibold text-gray-700">
                 {recentOrders.length} Orders
               </span>
             </div>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+          {/* Horizontal scroll wrapper keeps table readable on narrow screens */}
+          <div className="overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0">
+            <table className="w-full text-sm" style={{ minWidth: "540px" }}>
               <thead>
-              <tr className="text-left text-gray-500 border-b">
-                <th className="py-3">Order</th>
-                <th className="py-3">Customer</th>
-                <th className="py-3">Phone</th>
-                <th className="py-3">Total</th>
-                <th className="py-3">Status</th>
-                <th className="py-3 text-right">Actions</th>
-              </tr>
-            </thead>
-
+                <tr className="text-left text-gray-500 border-b">
+                  <th className="py-3 pr-3 font-medium">Order</th>
+                  <th className="py-3 pr-3 font-medium">Customer</th>
+                  <th className="py-3 pr-3 font-medium hidden sm:table-cell">Phone</th>
+                  <th className="py-3 pr-3 font-medium">Total</th>
+                  <th className="py-3 pr-3 font-medium">Status</th>
+                  <th className="py-3 text-right font-medium">Actions</th>
+                </tr>
+              </thead>
               <tbody>
                 {recentOrders.map((order) => (
                   <tr
                     key={order._id}
-                    className="border-b border-b-[#e9e9e9] hover:bg-gray-50 transition"
+                    className="border-b border-b-gray-100 hover:bg-gray-50 transition"
                   >
-                    <td className="py-4 font-medium text-gray-800">
-                      <button
-                        onClick={() => openModal(order)}
-                        className="text-blue-600 cursor-pointer hover:text-blue-800 underline"
-                      >
+                    <td className="py-3 pr-3">
+                      <button className="text-blue-600 hover:text-blue-800 underline text-xs sm:text-sm">
                         #{order._id.slice(-6)}
                       </button>
                     </td>
 
-                    <td className="py-4">
-                      <div className="font-medium text-gray-800">
+                    <td className="py-3 pr-3">
+                      <div className="font-medium text-gray-800 text-xs sm:text-sm truncate max-w-[100px] sm:max-w-none">
                         {order.buyerName}
                       </div>
                     </td>
 
-                    <td className="py-4 text-gray-600">{order.buyerPhone}</td>
-
-                    <td className="py-4 font-semibold text-gray-800">
-                      Rs. {order.totalAmount}
+                    <td className="py-3 pr-3 text-gray-600 text-xs sm:text-sm hidden sm:table-cell">
+                      {order.buyerPhone}
                     </td>
 
-                    <td className="px-6 py-4">
+                    <td className="py-3 pr-3 font-semibold text-gray-800 text-xs sm:text-sm whitespace-nowrap">
+                      Rs. {order.totalAmount.toLocaleString()}
+                    </td>
+
+                    <td className="py-3 pr-3">
                       <select
                         value={order.status}
-                        onChange={(e) =>
-                          updateStatus(order._id, e.target.value)
-                        }
-                        className={`px-3 py-1.5 rounded-full cursor-pointer text-xs font-medium border
-                    ${
-                      order.status === "pending"
-                        ? "bg-yellow-50 text-yellow-700 border-yellow-200"
-                        : order.status === "processing"
-                          ? "bg-blue-50 text-blue-700 border-blue-200"
-                          : order.status === "shipped"
-                            ? "bg-purple-50 text-purple-700 border-purple-200"
-                            : order.status === "delivered"
-                              ? "bg-green-50 text-green-700 border-green-200"
-                              : "bg-red-50 text-red-700 border-red-200"
-                    }`}
+                        onChange={(e) => updateStatus(order._id, e.target.value)}
+                        className={getStatusSelectClass(order.status)}
                       >
                         <option value="pending">Pending</option>
                         <option value="processing">Processing</option>
@@ -416,10 +387,10 @@ const Dashboard = () => {
                       </select>
                     </td>
 
-                    <td className="px-6 py-4 text-right">
+                    <td className="py-3 text-right">
                       <button
                         onClick={() => deleteOrder(order._id)}
-                        className="text-red-600 cursor-pointer hover:text-red-800 text-sm font-medium"
+                        className="text-red-500 hover:text-red-700 text-xs sm:text-sm font-medium"
                       >
                         Delete
                       </button>
@@ -430,10 +401,10 @@ const Dashboard = () => {
             </table>
 
             {recentOrders.length === 0 && (
-              <div className="text-center py-12">
-                <div className="text-6xl mb-4">📦</div>
-                <p className="text-gray-500 font-medium">No orders yet</p>
-                <p className="text-gray-400 text-sm">
+              <div className="text-center py-10">
+                <div className="text-5xl mb-3">📦</div>
+                <p className="text-gray-500 font-medium text-sm">No orders yet</p>
+                <p className="text-gray-400 text-xs mt-1">
                   Orders will appear here once customers start purchasing
                 </p>
               </div>

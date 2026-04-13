@@ -39,7 +39,7 @@ export default function Home() {
 
       <h1 className="text-3xl max-[600px]:text-xl max-[600px]:my-6 max-[600px]:mx-9 font-bold my-12 mx-18">Trending Products</h1>
 
-      <div className="grid grid-cols-4 max-[1200px]:grid-cols-3 max-[930px]:grid-cols-2 mx-auto w-11/12 gap-3 md:gap-12 mb-12">
+      <div className="grid grid-cols-4 max-[1200px]:grid-cols-3 max-[930px]:grid-cols-2 mx-auto w-11/12 gap-3 md:gap-12 mb-4 md:mb-6">
         {products.slice(0, 8).map((product) => (  // Show only first 8 products
           <Link key={product._id} href={`/product/${product._id}`}>
             <div className="group relative bg-white border border-gray-100 rounded-sm overflow-hidden ">

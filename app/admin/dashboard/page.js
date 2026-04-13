@@ -23,8 +23,6 @@ import {
   LibraryBig,
   Star,
   BarChart3,
-  Menu,
-  X,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
@@ -89,18 +87,12 @@ const Page = () => {
 
   const renderContent = () => {
     switch (activeTab) {
-      case "dashboard":
-        return <Dashboard />;
-      case "orders":
-        return <Orders />;
-      case "collections":
-        return <Collections />;
-      case "products":
-        return <Products />;
-      case "reviews":
-        return <Reviews />;
-      case "reports":
-        return <Reports />;
+      case "dashboard": return <Dashboard />;
+      case "orders": return <Orders />;
+      case "collections": return <Collections />;
+      case "products": return <Products />;
+      case "reviews": return <Reviews />;
+      case "reports": return <Reports />;
       default:
         return (
           <div className="bg-white p-8 rounded-2xl shadow-lg">
@@ -113,22 +105,23 @@ const Page = () => {
     }
   };
 
+  // Bottom nav tabs — limit to 5 for mobile
+  const mobileTabs = tabs.slice(0, 5);
+
   return (
     <div className="h-screen flex bg-linear-to-br from-slate-50 via-purple-50 to-slate-100">
-      {/* Sidebar */}
+
+      {/* ── Sidebar (desktop only) ── */}
       <aside
-        className={`bg-black shadow-2xl transition-all duration-300 ease-in-out ${
+        className={`hidden md:flex bg-black shadow-2xl transition-all duration-300 ease-in-out ${
           sidebarOpen ? "w-72" : "w-20"
-        } flex flex-col relative border-r border-slate-700/50`}
+        } flex-col relative border-r border-slate-700/50`}
       >
-        {/* Decorative gradient overlay */}
-        <div className="absolute inset-0 bg-linear-to-br from-purple-600/10 via-transparent to-pink-600/10 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-linear-to-br from-purple-600/10 via-transparent to-pink-600/10 pointer-events-none" />
 
         {/* Header */}
         <div className="relative p-6 border-b border-slate-700/50 flex items-center justify-between">
-          <div
-            className={`flex items-center gap-3 ${!sidebarOpen && "justify-center w-full"}`}
-          >
+          <div className={`flex items-center gap-3 ${!sidebarOpen && "justify-center w-full"}`}>
             {sidebarOpen ? (
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-linear-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg">
@@ -147,8 +140,6 @@ const Page = () => {
               </div>
             )}
           </div>
-
-          {/* Toggle Button */}
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
             className={`${
@@ -156,26 +147,20 @@ const Page = () => {
             } p-2 cursor-pointer bg-slate-800 hover:bg-slate-700 rounded-full transition-all duration-200 shadow-lg border border-slate-600 z-10 group`}
           >
             {sidebarOpen ? (
-              <ChevronLeft
-                size={18}
-                className="text-slate-300 group-hover:text-white transition-colors"
-              />
+              <ChevronLeft size={18} className="text-slate-300 group-hover:text-white transition-colors" />
             ) : (
-              <ChevronRight
-                size={18}
-                className="text-slate-300 group-hover:text-white transition-colors"
-              />
+              <ChevronRight size={18} className="text-slate-300 group-hover:text-white transition-colors" />
             )}
           </button>
         </div>
 
-        {/* Navigation */}
+        {/* Nav */}
         <nav className="flex-1 p-4 space-y-1 relative overflow-y-auto">
           {tabs.map(({ id, label, icon, gradient }, index) => (
             <button
               key={id}
               onClick={() => setActiveTab(id)}
-              className={`w-full cursor-pointer flex items-center gap-4 px-4 py-2  rounded-xl transition-all duration-300 group relative overflow-hidden ${
+              className={`w-full cursor-pointer flex items-center gap-4 px-4 py-2 rounded-xl transition-all duration-300 group relative overflow-hidden ${
                 activeTab === id
                   ? "bg-linear-to-r from-slate-800 to-slate-700 shadow-lg border border-slate-600"
                   : "hover:bg-slate-800/50 border border-transparent"
@@ -185,14 +170,9 @@ const Page = () => {
                 animation: mounted ? "slideIn 0.3s ease-out forwards" : "none",
               }}
             >
-              {/* Active indicator */}
               {activeTab === id && (
-                <div
-                  className={`absolute left-0 top-0 bottom-0 w-1 bg-linear-to-b ${gradient} rounded-r-full`}
-                ></div>
+                <div className={`absolute left-0 top-0 bottom-0 w-1 bg-linear-to-b ${gradient} rounded-r-full`} />
               )}
-
-              {/* Icon with gradient background */}
               <div
                 className={`flex items-center justify-center w-6 h-6 rounded-lg transition-all duration-300 ${
                   activeTab === id
@@ -200,35 +180,19 @@ const Page = () => {
                     : "bg-slate-800 group-hover:bg-slate-700"
                 }`}
               >
-                <div
-                  className={
-                    activeTab === id
-                      ? "text-white"
-                      : "text-slate-400 group-hover:text-slate-200"
-                  }
-                >
+                <div className={activeTab === id ? "text-white" : "text-slate-400 group-hover:text-slate-200"}>
                   {icon}
                 </div>
               </div>
-
-              {/* Label */}
               <span
-                className={`font-semibold transition-all duration-300 ${
-                  !sidebarOpen && "opacity-0 w-0"
-                } ${
-                  activeTab === id
-                    ? "text-white"
-                    : "text-slate-400 group-hover:text-slate-200"
+                className={`font-semibold transition-all duration-300 ${!sidebarOpen && "opacity-0 w-0"} ${
+                  activeTab === id ? "text-white" : "text-slate-400 group-hover:text-slate-200"
                 }`}
               >
                 {label}
               </span>
-
-              {/* Hover gradient effect */}
               {activeTab !== id && (
-                <div
-                  className={`absolute inset-0 bg-linear-to-r ${gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-xl`}
-                ></div>
+                <div className={`absolute inset-0 bg-linear-to-r ${gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-xl`} />
               )}
             </button>
           ))}
@@ -255,49 +219,73 @@ const Page = () => {
         )}
       </aside>
 
-      {/* Main Content */}
-      <main className="flex-1 overflow-y-auto">
-        {/* Top Bar */}
-        
+      {/* ── Main content ── */}
+      <main className="flex-1 flex flex-col overflow-hidden">
 
-        {/* Content Area */}
-        <div className="p-4">
+        {/* Mobile top bar */}
+        <header className="md:hidden bg-black border-b border-slate-700/50 px-4 py-3 flex items-center gap-3 flex-shrink-0">
+          <div className="w-8 h-8 bg-linear-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+            <img src="/Logo.png" className="invert h-5 w-5" alt="Logo" />
+          </div>
+          <div>
+            <h1 className="text-sm font-bold bg-linear-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent leading-none">
+              Admin Panel
+            </h1>
+            <p className="text-xs text-slate-400 leading-none mt-0.5">Manage your store</p>
+          </div>
+          <div className="ml-auto text-xs text-slate-400 capitalize">{activeTab}</div>
+        </header>
+
+        {/* Scrollable content area — pb-20 reserves space for mobile bottom nav */}
+        <div className="flex-1 overflow-y-auto p-4 pb-24 md:pb-4">
           <div className="max-w-7xl mx-auto">{renderContent()}</div>
         </div>
       </main>
 
-      {/* CSS for animations */}
+      {/* ── Bottom nav (mobile only) ── */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-black border-t border-slate-700/50 z-50 flex">
+        {mobileTabs.map(({ id, label, icon, gradient }) => (
+          <button
+            key={id}
+            onClick={() => setActiveTab(id)}
+            className="flex-1 flex flex-col items-center justify-center py-2 gap-1 cursor-pointer group relative"
+            style={{ minHeight: 56 }}
+          >
+            {/* Active pill indicator */}
+            {activeTab === id && (
+              <span className={`absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 rounded-full bg-linear-to-r ${gradient}`} />
+            )}
+            <div
+              className={`flex items-center justify-center w-7 h-7 rounded-lg transition-all duration-200 ${
+                activeTab === id
+                  ? `bg-linear-to-br ${gradient}`
+                  : "bg-slate-800 group-hover:bg-slate-700"
+              }`}
+            >
+              <div className={`${activeTab === id ? "text-white" : "text-slate-400"} [&>svg]:w-4 [&>svg]:h-4`}>
+                {icon}
+              </div>
+            </div>
+            <span
+              className={`text-[10px] font-medium leading-none ${
+                activeTab === id ? "text-purple-300" : "text-slate-500"
+              }`}
+            >
+              {label}
+            </span>
+          </button>
+        ))}
+      </nav>
+
       <style jsx global>{`
         @keyframes slideIn {
-          from {
-            opacity: 0;
-            transform: translateX(-20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
+          from { opacity: 0; transform: translateX(-20px); }
+          to   { opacity: 1; transform: translateX(0);      }
         }
-
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-          width: 8px;
-          height: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-          background: rgba(0, 0, 0, 0.05);
-          border-radius: 10px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-          background: linear-gradient(180deg, #a855f7, #ec4899);
-          border-radius: 10px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-          background: linear-gradient(180deg, #9333ea, #db2777);
-        }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,.05); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #a855f7, #ec4899); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #9333ea, #db2777); }
       `}</style>
     </div>
   );
